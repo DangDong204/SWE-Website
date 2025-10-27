@@ -10,4 +10,8 @@ public class hello_world {
     public String hello(){
         return "hello_world";
     }
+    @GetMapping("/huy")
+    public String huy(){
+        return "Huy";
+    }
 }
