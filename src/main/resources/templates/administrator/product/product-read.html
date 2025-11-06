@@ -1,0 +1,160 @@
+<!-- Modal xem chi tiết sản phẩm -->
+<div class="modal fade" id="detailProductModal" tabindex="-1" aria-labelledby="detailProductModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-xl modal-dialog-centered">
+        <div class="modal-content border-0 shadow-lg rounded-4">
+            <!-- Header -->
+            <div class="modal-header bg-primary bg-gradient text-white">
+                <h5 class="modal-title fw-semibold" id="detailProductModalLabel">
+                    <i class="ri-eye-fill"></i> Chi tiết sản phẩm
+                </h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Đóng"></button>
+            </div>
+
+            <!-- Body -->
+            <div class="modal-body">
+                <div class="row g-4">
+                    <!-- Cột trái: ảnh sản phẩm -->
+                    <div class="col-md-4 text-center">
+                        <div class="border rounded-3 p-3 bg-light shadow-sm h-100">
+                            <label class="form-label fw-semibold d-block mb-2">Ảnh đại diện</label>
+                            <img id="detail-avatar" src="" alt="Ảnh sản phẩm"
+                                 class="img-thumbnail shadow-sm mb-3"
+                                 style="max-height: 240px; border-radius: 10px; object-fit: cover;">
+
+                            <label class="form-label fw-semibold d-block mb-2">Ảnh liên quan</label>
+                            <div id="detail-images"
+                                 class="d-flex flex-wrap justify-content-center gap-2 border rounded p-2 bg-white"
+                                 style="min-height: 100px;">
+                                <span class="text-muted fst-italic">(Không có ảnh liên quan)</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Cột phải: thông tin sản phẩm -->
+                    <div class="col-md-8">
+                        <div class="row g-3">
+                            <div class="col-md-6">
+                                <label class="form-label fw-semibold">Mã sản phẩm</label>
+                                <input type="text" class="form-control" id="detail-id" readonly>
+                            </div>
+
+                            <div class="col-md-6">
+                                <label class="form-label fw-semibold">Tên sản phẩm</label>
+                                <input type="text" class="form-control" id="detail-name" readonly>
+                            </div>
+
+                            <div class="col-md-6">
+                                <label class="form-label fw-semibold">Danh mục</label>
+                                <input type="text" class="form-control" id="detail-category" readonly>
+                            </div>
+
+                            <div class="col-md-6">
+                                <label class="form-label fw-semibold">Bộ sưu tập</label>
+                                <input type="text" class="form-control" id="detail-collection" readonly>
+                            </div>
+
+                            <div class="col-md-6">
+                                <label class="form-label fw-semibold">Giá gốc</label>
+                                <input type="text" class="form-control" id="detail-price" readonly>
+                            </div>
+
+                            <div class="col-md-6">
+                                <label class="form-label fw-semibold">Giá khuyến mãi</label>
+                                <input type="text" class="form-control" id="detail-saleprice" readonly>
+                            </div>
+
+                            <div class="col-md-6">
+                                <label class="form-label fw-semibold">Trạng thái Hot</label>
+                                <div id="detail-ishot" class="form-control-plaintext"></div>
+                            </div>
+
+                            <div class="col-md-6">
+                                <label class="form-label fw-semibold">Trạng thái hoạt động</label>
+                                <div id="detail-status" class="form-control-plaintext"></div>
+                            </div>
+
+                            <div class="col-md-6">
+                                <label class="form-label fw-semibold">Ngày tạo</label>
+                                <input type="text" class="form-control" id="detail-createdate" readonly>
+                            </div>
+
+                            <div class="col-md-6">
+                                <label class="form-label fw-semibold">Ngày cập nhật</label>
+                                <input type="text" class="form-control" id="detail-updatedate" readonly>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Phần mô tả -->
+                <hr class="my-4">
+                <div class="col-12">
+                    <label class="form-label fw-semibold">Mô tả sản phẩm</label>
+                    <textarea class="form-control" id="detail-desc" rows="4" readonly></textarea>
+                </div>
+            </div>
+
+            <!-- Footer -->
+            <div class="modal-footer bg-light rounded-bottom-4">
+                <button type="button" class="btn btn-secondary px-4" data-bs-dismiss="modal">
+                    <i class="ri-close-circle-line me-1"></i> Đóng
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    document.getElementById('detailProductModal').addEventListener('show.bs.modal', function (event) {
+        const button = event.relatedTarget;
+        const get = attr => button.getAttribute(attr) || "";
+
+        // Gán dữ liệu cơ bản
+        document.getElementById('detail-id').value = get('data-id');
+        document.getElementById('detail-name').value = get('data-name');
+        document.getElementById('detail-category').value = get('data-category');
+        document.getElementById('detail-collection').value = get('data-collection');
+        document.getElementById('detail-price').value = parseFloat(get('data-price') || 0).toLocaleString('vi-VN') + " ₫";
+        document.getElementById('detail-saleprice').value = parseFloat(get('data-saleprice') || 0).toLocaleString('vi-VN') + " ₫";
+        document.getElementById('detail-createdate').value = get('data-createdate');
+        document.getElementById('detail-updatedate').value = get('data-updatedate');
+        document.getElementById('detail-desc').value = get('data-detaildesc') || "(Không có mô tả)";
+
+        // Ảnh đại diện
+        const avatar = get('data-avatar');
+        const avatarImg = document.getElementById('detail-avatar');
+        avatarImg.src = avatar && avatar.trim() !== "" ? avatar : "/images/no-image.png";
+
+        // Ảnh phụ
+        const imagesContainer = document.getElementById('detail-images');
+        imagesContainer.innerHTML = '';
+        const imagesAttr = get('data-images');
+        if (imagesAttr && imagesAttr.trim() !== "") {
+            const imagePaths = imagesAttr.split(';');
+            imagePaths.forEach(path => {
+                const img = document.createElement('img');
+                img.src = path.trim();
+                img.className = 'img-thumbnail shadow-sm';
+                img.style = 'width: 80px; height: 80px; object-fit: cover; border-radius: 6px;';
+                imagesContainer.appendChild(img);
+            });
+        } else {
+            imagesContainer.innerHTML = '<span class="text-muted fst-italic">(Không có ảnh liên quan)</span>';
+        }
+
+        // Trạng thái Hot
+        const isHot = get('data-ishot') === "true";
+        document.getElementById('detail-ishot').innerHTML = isHot
+            ? '<span class="badge bg-danger bg-opacity-75"> <i class="bi bi-fire"></i>Hot</span>'
+            : '<span class="badge bg-secondary bg-opacity-50"><i class="bi bi-fire"></i> Normal</span>';
+
+
+
+        // Trạng thái hoạt động
+        const status = get('data-status') === "true";
+        document.getElementById('detail-status').innerHTML = status
+            ? '<span class="badge bg-success"><i class="ri-checkbox-circle-line me-1"></i>Hoạt động</span>'
+            : '<span class="badge bg-dark"><i class="ri-close-circle-line me-1"></i>Ngừng hoạt động</span>';
+    });
+</script>
+
