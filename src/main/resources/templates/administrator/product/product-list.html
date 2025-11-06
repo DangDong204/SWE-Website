@@ -62,9 +62,10 @@
                                         <td th:text="${loop.count}"></td>
                                         <td th:text="${product.productName}"></td>
                                         <td><img th:if="${product.productAvatar != null}"
-                                                 th:src="@{'/images/' + ${product.productAvatar}}"
+                                                 th:src="@{'/' + ${product.productAvatar}}"
                                                  alt="Image"
-                                                 width="80"/></td>
+                                                 class="img-thumbnail"
+                                                 style="width: 60px; height: 60px; object-fit: cover;"/></td>
                                         <td th:text="${#numbers.formatDecimal(product.price, 0, 'COMMA', 2, 'POINT')}"></td>
                                         <td th:text="${#numbers.formatDecimal(product.salePrice, 0, 'COMMA', 2, 'POINT')}"></td>
                                         <td>
@@ -80,7 +81,20 @@
                                                     class="btn btn-primary btn-sm text-white"
                                                     title="Xem chi tiết"
                                                     data-bs-toggle="modal"
-                                                    data-bs-target="#detailProductModal">
+                                                    data-bs-target="#detailProductModal"
+                                                    th:attr="data-id=${product.id},
+                                                             data-name=${product.productName},
+                                                             data-category=${product.category.categoryName},
+                                                             data-collection=${product.collection.collectionName},
+                                                             data-price=${product.price},
+                                                             data-saleprice=${product.salePrice},
+                                                             data-avatar=@{'/' + ${product.productAvatar}},
+
+                                                             data-ishot=${product.isHot},
+                                                             data-status=${product.status},
+                                                             data-createdate=${#dates.format(product.createDate, 'dd/MM/yyyy HH:mm')},
+                                                             data-updatedate=${#dates.format(product.updateDate, 'dd/MM/yyyy HH:mm')},
+                                                             data-detaildesc=${product.productDesc}">
                                                 <i class="ri-eye-fill"></i>
                                             </button>
                                             <button type="button"
@@ -111,11 +125,12 @@
 
     </main><!-- End #main -->
 
-<!-- Footer -->
-<th:block th:replace="administrator/layout/footer.html"></th:block>
-<!-- JS -->
-<th:block th:replace="administrator/layout/js.html"></th:block>
+    <!-- Footer -->
+    <th:block th:replace="administrator/layout/footer.html"></th:block>
+    <!-- JS -->
+    <th:block th:replace="administrator/layout/js.html"></th:block>
 
+    <th:block th:replace="administrator/product/product-read"></th:block>
 
 </body>
 
