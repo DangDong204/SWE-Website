@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+
+    <title>Dashboard</title>
+    <meta content="" name="description">
+    <meta content="" name="keywords">
+    <!-- CSS -->
+    <th:block th:replace="administrator/layout/css.html"></th:block>
+
+</head>
+
+<body>
+    <!-- Header -->
+    <th:block th:replace="administrator/layout/header.html"></th:block>
+    <!-- Sidebar -->
+    <th:block th:replace="administrator/layout/sidebar.html"></th:block>
+
+    <main id="main" class="main">
+
+        <div class="pagetitle">
+            <h1>Dashboard</h1>
+            <nav>
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="/admin/home">Home</a></li>
+                    <li class="breadcrumb-item active">Product</li>
+                </ol>
+            </nav>
+        </div><!-- End Page Title -->
+
+        <section class="section dashboard">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title">Danh sách sản phẩm</h5>
+
+                            <div class="text-end mb-3">
+                                <button type="button" class="btn btn-success"
+                                        data-bs-toggle="modal" data-bs-target="#addProductModal">
+                                    <i class="ri-add-circle-fill"></i> Thêm mới
+                                </button>
+                            </div>
+
+                            <table class="table table-bordered">
+                                <thead>
+                                    <tr>
+                                        <th scope="col">STT</th>
+                                        <th scope="col">Tên sản phẩm</th>
+                                        <th scope="col">Hình ảnh</th>
+                                        <th scope="col">Giá</th>
+                                        <th scope="col">Giá khuyến mãi</th>
+                                        <th scope="col">Hot</th>
+                                        <th scope="col">Chức năng</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr th:each="product, loop : ${products}">
+                                        <td th:text="${loop.count}"></td>
+                                        <td th:text="${product.productName}"></td>
+                                        <td><img th:if="${product.productAvatar != null}"
+                                                 th:src="@{'/images/' + ${product.productAvatar}}"
+                                                 alt="Image"
+                                                 width="80"/></td>
+                                        <td th:text="${#numbers.formatDecimal(product.price, 0, 'COMMA', 2, 'POINT')}"></td>
+                                        <td th:text="${#numbers.formatDecimal(product.salePrice, 0, 'COMMA', 2, 'POINT')}"></td>
+                                        <td>
+                                            <span th:if="${product.isHot}" class="badge bg-danger bg-opacity-75">
+                                                <i class="bi bi-fire"></i> Hot
+                                            </span>
+                                            <span th:unless="${product.isHot}" class="badge bg-secondary bg-opacity-50">
+                                                <i class="bi bi-fire"></i> Normal
+                                            </span>
+                                        </td>
+                                        <td>
+                                            <button type="button"
+                                                    class="btn btn-primary btn-sm text-white"
+                                                    title="Xem chi tiết"
+                                                    data-bs-toggle="modal"
+                                                    data-bs-target="#detailProductModal">
+                                                <i class="ri-eye-fill"></i>
+                                            </button>
+                                            <button type="button"
+                                                    class="btn btn-warning btn-sm"
+                                                    title="Chỉnh sửa"
+                                                    data-bs-toggle="modal"
+                                                    data-bs-target="#editProductModal">
+                                                <i class="ri-pencil-fill"></i>
+                                            </button>
+
+                                            <a href=""
+                                               class="btn btn-danger btn-sm"
+                                               title="Xóa"
+                                               onclick="return confirm('Bạn có chắc chắn muốn xóa sản phẩm này không?');">
+                                                <i class="ri-delete-bin-5-fill"></i>
+                                            </a>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+
+            </div>
+        </section>
+
+    </main><!-- End #main -->
+
+<!-- Footer -->
+<th:block th:replace="administrator/layout/footer.html"></th:block>
+<!-- JS -->
+<th:block th:replace="administrator/layout/js.html"></th:block>
+
+
+</body>
+
+</html>
