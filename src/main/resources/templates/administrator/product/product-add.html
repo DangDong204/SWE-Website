@@ -1,10 +1,120 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
+<!-- Modal thêm sản phẩm -->
+<div class="modal fade" id="addProductModal" tabindex="-1" aria-labelledby="addProductModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-xl modal-dialog-centered">
+        <div class="modal-content border-0 shadow-lg rounded-4">
+            <!-- Header -->
+            <div class="modal-header bg-success bg-gradient text-white">
+                <h5 class="modal-title fw-semibold" id="addProductModalLabel">
+                    <i class="ri-add-circle-line"></i> Thêm sản phẩm mới
+                </h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Đóng"></button>
+            </div>
 
-</body>
-</html>
+            <!-- Body -->
+            <form th:action="@{/admin/product/add}" method="post" enctype="multipart/form-data" id="addProductForm">
+                <div class="modal-body">
+                    <div class="row g-4">
+                        <!-- Cột trái: ảnh -->
+                        <div class="col-md-4 text-center">
+                            <div class="border rounded-3 p-3 bg-light shadow-sm h-100">
+                                <label class="form-label fw-semibold d-block mb-2">Ảnh đại diện</label>
+                                <input type="file" name="avatarFile" id="add-avatar" class="form-control mb-3" accept="image/*">
+                                <img id="add-avatar-preview" src="/images/no-image.png"
+                                     class="img-thumbnail shadow-sm mb-3"
+                                     style="max-height: 240px; border-radius: 10px; object-fit: cover;">
+                            </div>
+                        </div>
+
+                        <!-- Cột phải: thông tin -->
+                        <div class="col-md-8">
+                            <div class="row g-3">
+
+                                <div class="col-md-6">
+                                    <label class="form-label fw-semibold">Tên sản phẩm</label>
+                                    <input type="text" name="productName" class="form-control" required>
+                                </div>
+
+                                <div class="col-md-6">
+                                    <label class="form-label fw-semibold">Danh mục</label>
+                                    <select class="form-select" name="categoryId">
+                                        <option value="">-- Chọn danh mục --</option>
+                                        <option th:each="cat : ${categories}"
+                                                th:value="${cat.id}"
+                                                th:text="${cat.categoryName}">
+                                        </option>
+                                    </select>
+                                </div>
+
+                                <div class="col-md-6">
+                                    <label class="form-label fw-semibold">Bộ sưu tập</label>
+                                    <select class="form-select" name="collectionId">
+                                        <option value="">-- Chọn bộ sưu tập --</option>
+                                        <option th:each="col : ${collections}"
+                                                th:value="${col.id}"
+                                                th:text="${col.collectionName}">
+                                        </option>
+                                    </select>
+                                </div>
+
+                                <div class="col-md-6">
+                                    <label class="form-label fw-semibold">Giá gốc</label>
+                                    <input type="number" name="price" class="form-control" min="0" required>
+                                </div>
+
+                                <div class="col-md-6">
+                                    <label class="form-label fw-semibold">Giá khuyến mãi</label>
+                                    <input type="number" name="salePrice" class="form-control" min="0">
+                                </div>
+
+                                <div class="col-md-6">
+                                    <label class="form-label fw-semibold">Hot</label>
+                                    <select name="isHot" class="form-select">
+                                        <option value="false">Normal</option>
+                                        <option value="true">Hot</option>
+                                    </select>
+                                </div>
+
+                                <div class="col-md-6">
+                                    <label class="form-label fw-semibold">Trạng thái</label>
+                                    <select name="status" class="form-select">
+                                        <option value="true">Hoạt động</option>
+                                        <option value="false">Ngừng hoạt động</option>
+                                    </select>
+                                </div>
+
+                            </div>
+
+                            <div class="mt-3">
+                                <label class="form-label fw-semibold">Mô tả sản phẩm</label>
+                                <textarea name="productDesc" class="form-control" rows="4"></textarea>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Footer -->
+                <div class="modal-footer bg-light rounded-bottom-4">
+                    <button type="button" class="btn btn-secondary px-4" data-bs-dismiss="modal">
+                        <i class="ri-close-circle-line me-1"></i> Hủy
+                    </button>
+                    <button type="submit" class="btn btn-success px-4">
+                        <i class="ri-save-3-line me-1"></i> Thêm mới
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script>
+    // Preview ảnh modal thêm
+    document.getElementById('add-avatar').addEventListener('change', function () {
+        const file = this.files[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = e => document.getElementById('add-avatar-preview').src = e.target.result;
+            reader.readAsDataURL(file);
+        }
+    });
+</script>
