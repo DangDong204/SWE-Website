@@ -84,8 +84,8 @@
                                                     data-bs-target="#detailProductModal"
                                                     th:attr="data-id=${product.id},
                                                              data-name=${product.productName},
-                                                             data-category=${product.category.categoryName},
-                                                             data-collection=${product.collection.collectionName},
+                                                             data-category=${product.category != null ? product.category.categoryName : 'Không có'},
+                                                             data-collection=${product.collection != null ? product.collection.collectionName : 'Không có'},
                                                              data-price=${product.price},
                                                              data-saleprice=${product.salePrice},
                                                              data-avatar=@{'/' + ${product.productAvatar}},
@@ -101,11 +101,24 @@
                                                     class="btn btn-warning btn-sm"
                                                     title="Chỉnh sửa"
                                                     data-bs-toggle="modal"
-                                                    data-bs-target="#editProductModal">
+                                                    data-bs-target="#editProductModal"
+                                                    th:attr="data-id=${product.id},
+                                                             data-name=${product.productName},
+                                                             data-category=${product.category != null ? product.category.id : 0},
+                                                             data-collection=${product.collection != null ? product.collection.id : 0},
+                                                             data-price=${product.price},
+                                                             data-saleprice=${product.salePrice},
+                                                             data-avatar=@{'/' + ${product.productAvatar}},
+
+                                                             data-ishot=${product.isHot},
+                                                             data-status=${product.status},
+                                                             data-createdate=${#dates.format(product.createDate, 'dd/MM/yyyy HH:mm')},
+                                                             data-updatedate=${#dates.format(product.updateDate, 'dd/MM/yyyy HH:mm')},
+                                                             data-detaildesc=${product.productDesc}">
                                                 <i class="ri-pencil-fill"></i>
                                             </button>
 
-                                            <a href=""
+                                            <a th:href="@{/admin/product/delete/{id}(id=${product.id})}"
                                                class="btn btn-danger btn-sm"
                                                title="Xóa"
                                                onclick="return confirm('Bạn có chắc chắn muốn xóa sản phẩm này không?');">
@@ -130,8 +143,9 @@
     <!-- JS -->
     <th:block th:replace="administrator/layout/js.html"></th:block>
 
+    <th:block th:replace="administrator/product/product-add"></th:block>
     <th:block th:replace="administrator/product/product-read"></th:block>
-
+    <th:block th:replace="administrator/product/product-edit"></th:block>
 </body>
 
 </html>
