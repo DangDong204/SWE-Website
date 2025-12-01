@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+
+    <title>Category Management</title>
+    <meta content="" name="description">
+    <meta content="" name="keywords">
+    <!-- CSS -->
+    <th:block th:replace="administrator/layout/css.html"></th:block>
+
+</head>
+
+<body>
+    <!-- Header -->
+    <th:block th:replace="administrator/layout/header.html"></th:block>
+    <!-- Sidebar -->
+    <th:block th:replace="administrator/layout/sidebar.html"></th:block>
+
+    <main id="main" class="main">
+
+        <div class="pagetitle">
+            <h1>Dashboard</h1>
+            <nav>
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="/admin/home">Home</a></li>
+                    <li class="breadcrumb-item active">Category</li>
+                </ol>
+            </nav>
+        </div><!-- End Page Title -->
+
+        <section class="section dashboard">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title">Danh sách danh mục</h5>
+
+                            <div class="text-end mb-3">
+                                <button type="button" class="btn btn-success"
+                                        data-bs-toggle="modal" data-bs-target="#addCategoryModal">
+                                    <i class="ri-add-circle-fill"></i> Thêm mới
+                                </button>
+                            </div>
+
+                            <table class="table table-bordered">
+                                <thead>
+                                <tr>
+                                    <th scope="col">STT</th>
+                                    <th scope="col">Tên danh mục</th>
+                                    <th scope="col">Mô tả</th>
+                                    <th scope="col">Chức năng</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr th:each="category, loop : ${categories}">
+                                    <td th:text="${loop.count}"></td>
+                                    <td th:text="${category.categoryName}"></td>
+                                    <td th:text="${category.categoryDesc}"></td>
+
+                                    <td>
+                                        <button type="button"
+                                                class="btn btn-primary btn-sm text-white"
+                                                title="Xem chi tiết"
+                                                data-bs-toggle="modal"
+                                                data-bs-target="#detailCategoryModal"
+                                                th:attr="
+                                                        data-id=${category.id},
+                                                        data-name=${category.categoryName},
+                                                        data-desc=${category.categoryDesc},
+                                                        data-parent=${category.parent != null ? category.parent.id : ''},
+                                                        data-status=${category.status},
+                                                        data-createdate=${#dates.format(category.createDate, 'dd/MM/yyyy HH:mm')},
+                                                        data-updatedate=${#dates.format(category.updateDate, 'dd/MM/yyyy HH:mm')}">
+                                            <i class="ri-eye-fill"></i>
+                                        </button>
+
+
+                                        <button type="button"
+                                                class="btn btn-warning btn-sm"
+                                                title="Chỉnh sửa"
+                                                data-bs-toggle="modal"
+                                                data-bs-target="#editCategoryModal"
+                                                th:attr="data-id=${category.id},
+                                                        data-name=${category.categoryName},
+                                                        data-desc=${category.categoryDesc},
+                                                        data-parent=${category.parent != null ? category.parent.id : ''},
+                                                        data-status=${category.status}">
+                                            <i class="ri-pencil-fill"></i>
+                                        </button>
+
+
+                                        <a th:href="@{/admin/category/delete/{id}(id=${category.id})}"
+                                           class="btn btn-danger btn-sm"
+                                           title="Xóa"
+                                           onclick="return confirm('Bạn có chắc chắn muốn xóa danh mục này không?');">
+                                            <i class="ri-delete-bin-5-fill"></i>
+                                        </a>
+                                    </td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+
+            </div>
+        </section>
+
+    </main><!-- End #main -->
+
+    <!-- Footer -->
+    <th:block th:replace="administrator/layout/footer.html"></th:block>
+    <!-- JS -->
+    <th:block th:replace="administrator/layout/js.html"></th:block>
+
+    <th:block th:replace="administrator/category/category-add"></th:block>
+    <th:block th:replace="administrator/category/category-read"></th:block>
+    <th:block th:replace="administrator/category/category-edit"></th:block>
+</body>
+</html>

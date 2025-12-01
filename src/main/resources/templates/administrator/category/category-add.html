@@ -1,0 +1,67 @@
+<!-- Modal thêm danh mục -->
+<div class="modal fade" id="addCategoryModal" tabindex="-1" aria-labelledby="addCategoryModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+        <div class="modal-content border-0 shadow-lg rounded-4">
+
+            <!-- Header -->
+            <div class="modal-header bg-success bg-gradient text-white">
+                <h5 class="modal-title fw-semibold" id="addCategoryModalLabel">
+                    <i class="ri-add-circle-line"></i> Thêm danh mục mới
+                </h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+            </div>
+
+            <!-- Body -->
+            <form th:action="@{/admin/category/add}" method="post">
+                <div class="modal-body">
+                    <div class="row g-4">
+
+                        <!-- Tên danh mục -->
+                        <div class="col-md-6">
+                            <label class="form-label fw-semibold">Tên danh mục</label>
+                            <input type="text" name="categoryName" class="form-control" required>
+                        </div>
+
+                        <!-- Danh mục cha -->
+                        <div class="col-md-6">
+                            <label class="form-label fw-semibold">Danh mục cha</label>
+                            <select name="parentId" class="form-select">
+                                <option value="">-- Chọn danh mục --</option>
+                                <option th:each="cat : ${categories}"
+                                        th:value="${cat.id}"
+                                        th:text="${cat.categoryName}">
+                                </option>
+                            </select>
+                        </div>
+
+                        <!-- Mô tả -->
+                        <div class="col-md-12">
+                            <label class="form-label fw-semibold">Mô tả</label>
+                            <textarea name="categoryDesc" class="form-control" rows="3"></textarea>
+                        </div>
+
+                        <!-- Trạng thái -->
+                        <div class="col-md-6">
+                            <label class="form-label fw-semibold">Trạng thái</label>
+                            <select name="status" class="form-select">
+                                <option value="true">Hoạt động</option>
+                                <option value="false">Ngừng hoạt động</option>
+                            </select>
+                        </div>
+
+                    </div>
+                </div>
+
+                <!-- Footer -->
+                <div class="modal-footer bg-light rounded-bottom-4">
+                    <button type="button" class="btn btn-secondary px-4" data-bs-dismiss="modal">
+                        <i class="ri-close-circle-line me-1"></i> Hủy
+                    </button>
+                    <button type="submit" class="btn btn-success px-4">
+                        <i class="ri-save-3-line me-1"></i> Thêm mới
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
