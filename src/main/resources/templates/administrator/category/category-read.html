@@ -1,0 +1,90 @@
+<div class="modal fade" id="detailCategoryModal" tabindex="-1" aria-labelledby="detailCategoryModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+        <div class="modal-content border-0 shadow-lg rounded-4">
+
+            <!-- Header -->
+            <div class="modal-header bg-primary bg-gradient text-white">
+                <h5 class="modal-title fw-semibold" id="detailCategoryModalLabel">
+                    <i class="ri-eye-fill"></i> Chi tiết danh mục
+                </h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+            </div>
+
+            <!-- Body -->
+            <div class="modal-body">
+                <div class="row g-4">
+
+                    <div class="col-md-6">
+                        <label class="form-label fw-semibold">Mã danh mục</label>
+                        <input type="text" id="detail-cat-id" class="form-control" readonly>
+                    </div>
+
+                    <div class="col-md-6">
+                        <label class="form-label fw-semibold">Tên danh mục</label>
+                        <input type="text" id="detail-cat-name" class="form-control" readonly>
+                    </div>
+
+                    <div class="col-md-6">
+                        <label class="form-label fw-semibold">Danh mục cha</label>
+                        <input type="text" id="detail-cat-parent" class="form-control" readonly>
+                    </div>
+
+                    <div class="col-md-6">
+                        <label class="form-label fw-semibold">Trạng thái</label>
+                        <div id="detail-cat-status" class="form-control-plaintext"></div>
+                    </div>
+
+                    <div class="col-md-6">
+                        <label class="form-label fw-semibold">Ngày tạo</label>
+                        <input type="text" id="detail-cat-created" class="form-control" readonly>
+                    </div>
+
+                    <div class="col-md-6">
+                        <label class="form-label fw-semibold">Ngày cập nhật</label>
+                        <input type="text" id="detail-cat-updated" class="form-control" readonly>
+                    </div>
+
+                    <div class="col-md-12">
+                        <label class="form-label fw-semibold">Mô tả</label>
+                        <textarea id="detail-cat-desc" class="form-control" rows="4" readonly></textarea>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Footer -->
+            <div class="modal-footer bg-light rounded-bottom-4">
+                <button type="button" class="btn btn-secondary px-4" data-bs-dismiss="modal">
+                    <i class="ri-close-circle-line me-1"></i> Đóng
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    document.getElementById('detailCategoryModal')
+        .addEventListener('show.bs.modal', function (event) {
+            const button = event.relatedTarget;
+            const get = attr => button.getAttribute(attr) || "";
+
+            // Gán dữ liệu cơ bản
+            document.getElementById('detail-cat-id').value = get('data-id');
+            document.getElementById('detail-cat-name').value = get('data-name');
+            document.getElementById('detail-cat-desc').value = get('data-desc') || "(Không có mô tả)";
+
+            // Danh mục cha
+            const parent = get('data-parent');
+            document.getElementById('detail-cat-parent').value =
+                parent && parent.trim() !== "" ? parent : "Không có";
+
+            // Trạng thái hoạt động
+            const status = get('data-status') === "true";
+            document.getElementById('detail-cat-status').innerHTML = status
+                ? '<span class="badge bg-success"><i class="ri-checkbox-circle-line me-1"></i>Hoạt động</span>'
+                : '<span class="badge bg-dark"><i class="ri-close-circle-line me-1"></i>Ngừng hoạt động</span>';
+
+            // Ngày tạo & cập nhật (nếu có)
+            document.getElementById('detail-cat-created').value = get('data-createdate') || "";
+            document.getElementById('detail-cat-updated').value = get('data-updatedate') || "";
+        });
+</script>

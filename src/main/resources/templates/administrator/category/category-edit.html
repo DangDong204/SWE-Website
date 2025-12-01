@@ -1,0 +1,88 @@
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<div class="modal fade" id="editCategoryModal" tabindex="-1" aria-labelledby="editCategoryModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+        <div class="modal-content border-0 shadow-lg rounded-4">
+
+            <!-- Header -->
+            <div class="modal-header bg-warning bg-gradient text-black">
+                <h5 class="modal-title fw-semibold" id="editCategoryModalLabel">
+                    <i class="ri-edit-2-line"></i> Chỉnh sửa danh mục
+                </h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+            </div>
+
+            <!-- Body -->
+            <form th:action="@{/admin/category/edit}" method="post" id="editCategoryForm">
+                <div class="modal-body">
+                    <div class="row g-3">
+
+                        <!-- Hidden id -->
+                        <input type="hidden" name="id" id="edit-cat-id">
+
+                        <!-- Tên danh mục -->
+                        <div class="col-md-6">
+                            <label class="form-label fw-semibold">Tên danh mục</label>
+                            <input type="text" name="categoryName" id="edit-cat-name" class="form-control" required>
+                        </div>
+
+                        <!-- Danh mục cha -->
+                        <div class="col-md-6">
+                            <label class="form-label fw-semibold">Danh mục cha</label>
+
+                            <!-- Sử dụng parent.id để Spring bind chính xác -->
+                            <select name="parent.id" id="edit-cat-parent" class="form-select">
+                                <option value="">-- Không có --</option>
+                                <option th:each="c : ${categories}"
+                                        th:value="${c.id}"
+                                        th:text="${c.categoryName}">
+                                </option>
+                            </select>
+                        </div>
+
+                        <!-- Mô tả -->
+                        <div class="col-md-12">
+                            <label class="form-label fw-semibold">Mô tả</label>
+                            <textarea name="categoryDesc" id="edit-cat-desc" class="form-control" rows="3"></textarea>
+                        </div>
+
+                        <!-- Trạng thái -->
+                        <div class="col-md-6">
+                            <label class="form-label fw-semibold">Trạng thái</label>
+                            <select name="status" id="edit-cat-status" class="form-select">
+                                <option value="true">Hoạt động</option>
+                                <option value="false">Ngừng hoạt động</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Footer -->
+                <div class="modal-footer bg-light rounded-bottom-4">
+                    <button type="button" class="btn btn-secondary px-4" data-bs-dismiss="modal">
+                        <i class="ri-close-circle-line me-1"></i> Hủy
+                    </button>
+                    <button type="submit" class="btn btn-success px-4">
+                        <i class="ri-save-3-line me-1"></i> Lưu thay đổi
+                    </button>
+                </div>
+            </form>
+
+        </div>
+    </div>
+</div>
+
+<script>
+    document.getElementById('editCategoryModal')
+        .addEventListener('show.bs.modal', function (event) {
+
+            const btn = event.relatedTarget;
+            const get = attr => btn.getAttribute(attr) || "";
+
+            document.getElementById('edit-cat-id').value = get('data-id');
+            document.getElementById('edit-cat-name').value = get('data-name');
+            document.getElementById('edit-cat-desc').value = get('data-desc');
+            document.getElementById('edit-cat-parent').value = get('data-parent');
+            document.getElementById('edit-cat-status').value = get('data-status');
+        });
+</script>
